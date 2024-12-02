@@ -32,24 +32,44 @@ public class QueryProcessor {
             return String.valueOf(max);
         }   
 
-        if (query.toLowerCase().matches("plus")) {
-            System.out.println("plus Query: " + query);
-            Pattern pattern = Pattern.compile("(\\d+)\\s+plus\\s+(\\d+)");
+        if (query.toLowerCase().contains("plus")) {
+            Pattern pattern = Pattern.compile("\\d+");
             Matcher matcher = pattern.matcher(query);
-            
+
             int sum = 0;
-            if (matcher.find()) {
-                // Extract the two numbers
-                int num1 = Integer.parseInt(matcher.group(1));
-                int num2 = Integer.parseInt(matcher.group(2));
-                
-                // Calculate the sum
-                sum = num1 + num2;
+            while (matcher.find()) {
+                sum += Integer.parseInt(matcher.group());
             }
+
             return String.valueOf(sum);
         }
 
-        
+        if (query.toLowerCase().contains("multiplied")) {
+            Pattern pattern = Pattern.compile("\\d+");
+            Matcher matcher = pattern.matcher(query);
+
+            int sum = 1;
+            while (matcher.find()) {
+                sum *= Integer.parseInt(matcher.group());
+            }
+
+            return String.valueOf(sum);
+        }
+
+        if (query.toLowerCase().contains("which of the following numbers is both a square and a cube")) {
+            String[] numbers = query.replaceAll("[^\\d ]", "").trim().split(" ");
+            for (String numberStr : numbers) {
+                if (!numberStr.isEmpty()) {
+                    int number = Integer.parseInt(numberStr);
+                    double sqrt = Math.sqrt(number);
+                    double cbrt = Math.cbrt(number);
+                    if (sqrt == Math.floor(sqrt) && cbrt == Math.floor(cbrt)) {
+                        return String.valueOf(number);
+                    }
+                }
+            }
+        }
+
         return "";
     }
 
