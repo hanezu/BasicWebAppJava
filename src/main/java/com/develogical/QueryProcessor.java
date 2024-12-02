@@ -1,9 +1,20 @@
 package com.develogical;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class QueryProcessor {
+    
+    public static boolean isPrime(int number) {
+        if (number <= 1) return false;
+        for (int i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i == 0) return false;
+        }
+        return true;
+    }
 
     public String process(String query) {
 
@@ -56,6 +67,24 @@ public class QueryProcessor {
             return String.valueOf(sum);
         }
 
+        if (query.toLowerCase().contains("minus")) {
+            Pattern pattern = Pattern.compile("\\d+");
+            Matcher matcher = pattern.matcher(query);
+
+            int i = 0;
+            int sum = 0;
+            while (matcher.find()) {
+                if (i == 0) {
+                    sum = Integer.parseInt(matcher.group());
+                } else {
+                    sum -= Integer.parseInt(matcher.group());
+                }
+                i++;
+            }
+
+            return String.valueOf(sum);
+        }
+
         if (query.toLowerCase().contains("which of the following numbers is both a square and a cube")) {
             String[] numbers = query.replaceAll("[^\\d ]", "").trim().split(" ");
             for (String numberStr : numbers) {
@@ -68,6 +97,28 @@ public class QueryProcessor {
                     }
                 }
             }
+        }
+        
+        if (query.contains("prime")) {
+            // Extract numbers from the input string
+            Pattern pattern = Pattern.compile("\\d+");
+            Matcher matcher = pattern.matcher(query);
+            
+            List<Integer> primes = new ArrayList<>();
+            
+            while (matcher.find()) {
+                int number = Integer.parseInt(matcher.group());
+                if (isPrime(number)) {
+                    primes.add(number);
+                }
+            }
+            
+            // Convert the list of primes to a comma-separated string
+            String primesString = primes.stream()
+                                        .map(String::valueOf)
+                                        .collect(Collectors.joining(", "));
+            
+            return primesString;
         }
 
         return "";
