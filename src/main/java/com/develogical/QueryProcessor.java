@@ -32,6 +32,24 @@ public class QueryProcessor {
             return String.valueOf(max);
         }   
 
+        if (query.toLowerCase().matches("plus")) {
+            System.out.println("plus Query: " + query);
+            Pattern pattern = Pattern.compile("(\\d+)\\s+plus\\s+(\\d+)");
+            Matcher matcher = pattern.matcher(query);
+            
+            int sum = 0;
+            if (matcher.find()) {
+                // Extract the two numbers
+                int num1 = Integer.parseInt(matcher.group(1));
+                int num2 = Integer.parseInt(matcher.group(2));
+                
+                // Calculate the sum
+                sum = num1 + num2;
+            }
+            return String.valueOf(sum);
+        }
+
+        
         return "";
     }
 
