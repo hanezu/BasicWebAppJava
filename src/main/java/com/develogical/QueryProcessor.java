@@ -11,7 +11,7 @@ public class QueryProcessor {
         }
 
         if (query.contains("your name")) {
-            return "RobTest";
+            return "QA_survival";
         }
 
         return "";
