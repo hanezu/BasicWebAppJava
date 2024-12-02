@@ -32,7 +32,6 @@ public class QueryProcessor {
             Pattern pattern = Pattern.compile("\\d+");
             Matcher matcher = pattern.matcher(query);
             
-            // Parse numbers and find the largest
             int max = Integer.MIN_VALUE;
             while (matcher.find()) {
                 int number = Integer.parseInt(matcher.group());
@@ -100,7 +99,6 @@ public class QueryProcessor {
         }
         
         if (query.contains("prime")) {
-            // Extract numbers from the input string
             Pattern pattern = Pattern.compile("\\d+");
             Matcher matcher = pattern.matcher(query);
             
@@ -113,12 +111,30 @@ public class QueryProcessor {
                 }
             }
             
-            // Convert the list of primes to a comma-separated string
             String primesString = primes.stream()
                                         .map(String::valueOf)
                                         .collect(Collectors.joining(", "));
             
             return primesString;
+        }
+
+
+        // 	What is 63 to the power of 68?
+        if (query.contains("to the power of")) {
+            Pattern pattern = Pattern.compile("\\d+");
+            Matcher matcher = pattern.matcher(query);
+            int base = 0;
+            int power = 0;
+            int i = 0;
+            while (matcher.find()) {
+                if (i == 0) {
+                    base = Integer.parseInt(matcher.group());
+                } else {
+                    power = Integer.parseInt(matcher.group());
+                }
+                i++;
+            }
+            return String.valueOf((int) Math.pow(base, power));
         }
 
         return "";
