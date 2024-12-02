@@ -1,5 +1,8 @@
 package com.develogical;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class QueryProcessor {
 
     public String process(String query) {
@@ -13,6 +16,21 @@ public class QueryProcessor {
         if (query.contains("your name")) {
             return "QA_survival";
         }
+
+        if (query.contains("numbers is the largest")) {
+            Pattern pattern = Pattern.compile("\\d+");
+            Matcher matcher = pattern.matcher(query);
+            
+            // Parse numbers and find the largest
+            int max = Integer.MIN_VALUE;
+            while (matcher.find()) {
+                int number = Integer.parseInt(matcher.group());
+                if (number > max) {
+                    max = number;
+                }
+            }
+            return String.valueOf(max);
+        }   
 
         return "";
     }
